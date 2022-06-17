@@ -62,8 +62,8 @@ const Home: NextPage = () => {
       {/* data goes here */}
       {
         todos.map( (todo)=>(
-          <div key={Math.random(todo.length)}>
-            <ListComponent todo={todos} />
+          <div key={Math.random(todo.todo.length)}>
+            <ListComponent todo={todo} />
             </div>
           
         ))
