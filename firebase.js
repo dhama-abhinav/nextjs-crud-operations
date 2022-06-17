@@ -7,7 +7,7 @@ import firebase from 'firebase'
 // import { getFirestore } from "firebase/firestore";
 // import { getDatabase } from "firebase/database";
 
-const firebaseApp = firebase.initializeApp({
+const firebaseApp =!firebase.apps.length ? firebase.initializeApp({
     apiKey: "AIzaSyAEUFpRIWA0aXFWf599mEsB_nzIoT42TAg",
     authDomain: "my-nextjs-crud-demo.firebaseapp.com",
     projectId: "my-nextjs-crud-demo",
@@ -15,8 +15,9 @@ const firebaseApp = firebase.initializeApp({
     messagingSenderId: "64180135730",
     appId: "1:64180135730:web:5071fd5c25b96641e6192b",
     measurementId: "G-K8EMG7CHMZ"
-  })
+  }) : firebase.app()
 
-const db=firebaseApp.firestore()
+ 
+const db= firebaseApp.firestore()
 
 export default db

@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import type { NextPage } from 'next'
 import { delBasePath } from 'next/dist/shared/lib/router/router'
 import Head from 'next/head'
@@ -9,12 +10,14 @@ import db from '../firebase'
 const Home: NextPage = () => {
   //sate
   const [input,setInput]=useState("")
-  const [data,setData]=useState([])
+  const [todos,setTodos]=useState([])
 
   //when app load, want to listen to DB
   useEffect( ()=>{
+
     db.collection("todos").orderBy('timestamp','desc').onSnapshot( snapshot => {
-      setData(snapshot.docs.map( doc => ({ id:doc.id ,todo:doc.data().todo})))
+      console.log("DDD",snapshot.docs.map( doc => ({ id:doc.id ,todo:doc.data().todo})))
+      setTodos(snapshot.docs.map( doc => ({ id:doc.id ,todo:doc.data().todo})))
     })
   },[])
 
@@ -22,11 +25,12 @@ const Home: NextPage = () => {
   const addData = (e)=>{
     e.preventDefault()
     db.collection('todos').add({
-      todo : input
+      todo : input,
+      timestamp :firebase.firestore.FieldValue.serverTimestamp()
       //can add timestamp also as  firestore will provie timestamp
     })
     console.log("click working")
-    setData( [...data,input])
+    setTodos( [...todos,input])
     //to make input field empty after data entered
     setInput("")
   }
@@ -57,9 +61,9 @@ const Home: NextPage = () => {
       <br />
       {/* data goes here */}
       {
-        data.map( (data)=>(
-          <div key={Math.random(data.length)}>
-            <ListComponent text={data} />
+        todos.map( (todo)=>(
+          <div key={Math.random(todo.length)}>
+            <ListComponent todo={todos} />
             </div>
           
         ))
